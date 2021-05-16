@@ -1,0 +1,100 @@
+import React from "react";
+import {Button, TextField, Box, Typography, Container } from '@material-ui/core';
+import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
+import { Helmet } from "react-helmet";
+import {Formik} from 'formik';
+import {patch} from 'src/actions/requests';
+const EditOffer = (param) => {
+  const navigate =useNavigate();
+  return (
+    <>
+    <Helmet>
+        <title>Edit offer</title>
+    </Helmet>
+    <Box 
+      component="div"
+      align='center'
+      sx={{
+        py:3,
+        height: '100%'
+      }}
+      >
+      <Container>
+        <Formik
+          initialValues = {{ 
+            name: '',
+            link: '' 
+          }}
+          onSubmit={(values)=>{
+            console.log(values);
+            patch(values);
+            navigate('../offer',{replace:true});
+          }}
+        >
+          {({
+            errors,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+            isSubmitting,
+            touched,
+            values
+          })=>(
+      <form onSubmit={handleSubmit} >
+      <Typography 
+      color='textPrimary'
+      variant='h3'
+      >
+        Edit offer
+      </Typography>
+     
+        <div className="form-row">
+          <TextField 
+          variant="outlined"
+          id="name"
+          name="name"
+          label="Offer Name"
+          onChange={handleChange}
+          defaultValue={values.name=localStorage.getItem("name")}
+          sx={{
+            my:1,
+            height: '100%'
+          }}
+          />
+          
+        </div>
+        <div className="form-row">
+          <TextField
+          variant="outlined"
+          id="link"
+          name="link"
+          label="Offer Link"
+          disabled
+          onChange={handleChange}
+          defaultValue={values.link=localStorage.getItem("link")}
+          sx={{
+            my:1,
+            height: '100%'
+          }}
+          />
+        </div>
+        <div>
+          <Button 
+          variant="contained" 
+          color="primary"
+          type="submit"
+          >
+            Submit
+          </Button>
+        </div>
+      </form>
+      )}
+        </Formik>
+      </Container>
+    </Box>
+    </>
+  );
+};
+
+export default EditOffer;
